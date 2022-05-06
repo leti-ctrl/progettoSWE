@@ -11,9 +11,9 @@ public class ChiefGalley {
 	 * crea l'oggetto ordine e lo setta al tavolo corrispondente; 
 	 * ritorna l'oggetto creato per fare le operazioni di aggiunta/rimozione di elementi
 	 */
-	public Order creaOrdine (Table t) {
-		Order ord = generaOrdine(t.getNumeroTavolo());
-		t.setOrdine(ord);
+	public Order takeOrder(Table t) {
+		Order ord = generateOrder(t.getTableNumber());
+		t.setAnOrder(ord);
 				
 		return ord;
 	}
@@ -54,14 +54,14 @@ public class ChiefGalley {
 	 * inviaOrdine (Ordine)
 	 * cambia lo stato del tavolo in ATTESA_RUNNER, inserisce l'ordine nel buffer e chiama il notify perch� l'oridne � pronto
 	 */
-	public void inviaOrdine(Order ord) {
-		Room.getTavolo(ord.getNumeroTavolo()).setOrdinato();
+	public void sendOrder(Order ord) {
+		Room.getTable(ord.getTableNumber()).setStateOrdered();
 		BufferFIFO.push(ord);
 		ord.notify();
 	}
 	
 	
-	public Order generaOrdine(int a) {
+	private Order generateOrder (int a) {
 		Order O = Order.valueOf(a);
 		return O;
 	}

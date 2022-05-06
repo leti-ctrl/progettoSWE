@@ -14,7 +14,7 @@ public class Runner implements Observer{
 	@Override
 	public void update(Order o) {
 		// � arrivato l'ordine del tavolo x!!
-		System.out.println("E' arrivato l'ordine del tavolo "+o.getNumeroTavolo());
+		System.out.println("E' arrivato l'ordine del tavolo "+o.getTableNumber());
 	}
 	
 	
@@ -22,7 +22,7 @@ public class Runner implements Observer{
 	 * getOrdine()
 	 * fa pop() da BufferFIFO
 	 */
-	public Order getOrdine () {
+	public Order getOrder() {
 		return BufferFIFO.pop();
 	}
 
@@ -30,7 +30,7 @@ public class Runner implements Observer{
 	 * prendiRobaDalFRigo(String, int)
 	 * utilizza il metodo removeElement(String, int) per decrementare gli elementi presenti nel frigo
 	 */
-	public void prendiRobaDalFrigo (String element, int number) {
+	public void takeThingsToDrink (String element, int number) {
 		Fridge.removeElement(element, number);
 	}
 	
@@ -39,7 +39,7 @@ public class Runner implements Observer{
 	 * setServito(Ordine ord)
 	 * setta lo stato del tavolo a SERVITO
 	 */
-	public void setServito(Order ord) {
-		Room.getTavolo(ord.getNumeroTavolo()).setServito();
+	public void setDone(Order ord) {
+		Room.getTable(ord.getTableNumber()).setDone();
 	}
 }

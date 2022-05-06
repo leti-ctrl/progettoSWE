@@ -5,27 +5,27 @@ import Galley.Order;
 public class Table {
 
         //stato in cui si pu� trovare un tavolo
-        static final String ATTESA_CLIENTI = "GRAY";
-        static final String ATTESA_CAPOCAMBUSA = "RED";
-        static final String ATTESA_RUNNER = "BLUE";
-        static final String SERVITO = "GREEN";
+        static final String WAITING_FOR_CLIENTS = "GRAY";
+        static final String WAITING_FOR_CHIEFGALLEY = "RED";
+        static final String WAITING_FOR_RUNNER = "BLUE";
+        static final String DONE = "GREEN";
 
-        private int numeroTavolo;
-        private String nomeTavolo = "";
+        private final int tableNumber;
+        private String tableName = "";
         private int pax = 0;
-        private Order ordine = null;
-        private String state = ATTESA_CLIENTI;
+        private Order anOrder = null;
+        private String state = WAITING_FOR_CLIENTS;
 
 
-        Table(int numeroTavolo) {
-            this.numeroTavolo = numeroTavolo;
+        Table(int tableNumber) {
+            this.tableNumber = tableNumber;
         }
 
-        void setNomeTavolo (String nomeTavolo) {
-            this.nomeTavolo = nomeTavolo;
+        void setTableName(String tableName) throws NullPointerException {
+            this.tableName = tableName;
         }
 
-        void addPax (int n) {
+        void addPax (int n) throws NullPointerException {
             setPax(getPax() + n);
         }
 
@@ -38,31 +38,31 @@ public class Table {
             return pax;
         }
 
-        public int getNumeroTavolo() {
-            return numeroTavolo;
+        public int getTableNumber() {
+            return tableNumber;
         }
 
-        public String getNomeTavolo() {
-            return nomeTavolo;
+        public String getTableName() throws NullPointerException {
+            return tableName;
         }
 
-        public String getState() {
+        public String getState() throws NullPointerException {
             return state;
         }
 
-        void setCompleto () {
-            state = ATTESA_CAPOCAMBUSA;
+        void setComplete() {
+            state = WAITING_FOR_CHIEFGALLEY;
         }
 
-        public void setOrdinato () {
-            state = ATTESA_RUNNER;
+        public void setStateOrdered() {
+            state = WAITING_FOR_RUNNER;
         }
 
-        public void setServito () {
-            state = SERVITO;
+        public void setDone() {
+            state = DONE;
         }
-        public void setOrdine(Order ordine) {
-            this.ordine = ordine;
+        public void setAnOrder(Order ord) {
+            this.anOrder = ord;
         }
 
 }

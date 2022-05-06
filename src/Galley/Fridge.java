@@ -10,7 +10,7 @@ import DesignPattern.Observer;
 
 public class Fridge implements Observer {
 	
-	private static Map<String, Integer> frigo = new Hashtable <> ();
+	private static Map<String, Integer> fridgeMap = new Hashtable <> ();
 	
 	
 	/*
@@ -18,7 +18,7 @@ public class Fridge implements Observer {
 	 * controlla se un elemento c'� nel frigo prima di aggiungere nell'ordine
 	 */
 	static boolean check (String name, int tot) {
-		Integer value = frigo.get(name);
+		Integer value = fridgeMap.get(name);
 		if (value != null && value >= tot)
 			return true;
 		return false;
@@ -29,19 +29,19 @@ public class Fridge implements Observer {
 	 * metodo utilizzato dal runner per togliere le cose dal frigo e servirle al tavolo
 	 */
 	static void removeElement (String element, int tot) {
-		Integer oldValue = frigo.get(element);
-		frigo.replace(element, oldValue-tot);
+		Integer oldValue = fridgeMap.get(element);
+		fridgeMap.replace(element, oldValue-tot);
 	}
 
 	@Override
-	public void update(Order o) {
+	public void update(Order ord) {
 		
-		Map<String,Integer> ord = o.getOrdinazione();
-		Set<String> element = ord.keySet();
+		Map<String,Integer> o = ord.getThingsToDrink();
+		Set<String> element = o.keySet();
 		
 		for (String i : element) {
-			int newValue = frigo.get(i) - ord.get(i);
-			frigo.replace(i, newValue);
+			int newValue = fridgeMap.get(i) - o.get(i);
+			fridgeMap.replace(i, newValue);
 		}
 		
 		

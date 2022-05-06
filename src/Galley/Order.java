@@ -10,13 +10,13 @@ import DesignPattern.Observable;
 
 public class Order extends Observable {
 	
-	private Map<String, Integer> ordinazione = new Hashtable<> (); 
+	private Map<String, Integer> thingsToDrink = new Hashtable<> ();
 	private int pax = 0;
-	private int numeroTavolo;
+	private int tableNumber;
 	
 	
 	private Order(int numeroTavolo) {
-		this.numeroTavolo = numeroTavolo;
+		this.tableNumber = numeroTavolo;
 	}
 	
 	
@@ -26,7 +26,7 @@ public class Order extends Observable {
 	 * aggiunge un elemento alla lista dell'ordine
 	 */
 	void addElement (String name, int tot, int p) {
-		ordinazione.put(name, tot);
+		thingsToDrink.put(name, tot);
 		pax = getPax() + p;
 	}
 	
@@ -35,22 +35,22 @@ public class Order extends Observable {
 	 * rimuove un elemento dall'ordinazione in modo definitivo
 	 */
 	void removeElement(String name, int p) {
-		ordinazione.remove(name);
+		thingsToDrink.remove(name);
 		pax = getPax() - p;
 	}
 	
 	
 	
-	public int getNumeroTavolo() {
-		return numeroTavolo;
+	public int getTableNumber() {
+		return tableNumber;
 	}
 	
 	public int getPax() {
 		return pax;
 	}
 	
-	public Map<String, Integer> getOrdinazione() {
-		return ordinazione;
+	public Map<String, Integer> getThingsToDrink() {
+		return thingsToDrink;
 	}
 
 	

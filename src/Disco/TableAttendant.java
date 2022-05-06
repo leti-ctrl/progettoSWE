@@ -5,11 +5,11 @@ import java.util.Map;
 
 public class TableAttendant {
 
-    private static Map <String, Integer> prenotazioni;
+    private static Map <String, Integer> reservations;
 
 
-    public TableAttendant(Map<String, Integer> prenotazioni) {
-        Disco.TableAttendant.prenotazioni.putAll(prenotazioni);
+    public TableAttendant(Map<String, Integer> res) {
+        Disco.TableAttendant.reservations.putAll(res);
     }
 
 
@@ -19,20 +19,20 @@ public class TableAttendant {
      * prende in ingresso anche un booleano che mi dice se i tavolo � al completo oppure no.
      * nel caso sia al completo cambia lo stato del tavolo in ATTESA_CLIENTI
      */
-    public void setTavolo (String nomeTavolo, int pax, boolean completo) {
-        Integer numero = prenotazioni.get(nomeTavolo);
+    public void setTable (String tableName, int pax, boolean complete) {
+        Integer num = reservations.get(tableName);
 
-        if (numero != null && Room.getTavolo(numero).getState()!=Table.ATTESA_CLIENTI){
-            Table t = Room.getTavolo(numero);
+        if (num != null && Room.getTable(num).getState()!=Table.WAITING_FOR_CLIENTS){
+            Table t = Room.getTable(num);
             t.addPax(pax);
-            t.setNomeTavolo(nomeTavolo);
+            t.setTableName(tableName);
 
-            if (completo /*&& t.getState()!=Tavolo.ATTESA_CLIENTI*/ )
-                t.setCompleto();
+            if (complete /*&& t.getState()!=Tavolo.ATTESA_CLIENTI*/ )
+                t.setComplete();
         }
         else
-            System.out.println("Il nome del tavolo non � presente nella lista delle prenotazioni "
-                    + "oppure � gi� al completo");
+            System.out.println("Il nome del tavolo non e' presente nella lista delle prenotazioni "
+                    + "oppure e' gia' al completo");
     }
 
 
@@ -43,15 +43,15 @@ public class TableAttendant {
      * setTavolo con l'attributo boolen completo = true.
      */
 
-    public void setCompleto (String nomeTavolo, int pax) {
-        Integer numero = prenotazioni.get(nomeTavolo);
+    public void setComplete(String tableName, int pax) {
+        Integer numero = reservations.get(tableName);
 
-        if (Room.getTavolo(numero).getNomeTavolo() == null)
-            Room.getTavolo(numero).setNomeTavolo(nomeTavolo);
-        if (numero != null && Room.getTavolo(numero).getState()!=Table.ATTESA_CLIENTI) {
-            Table t = Room.getTavolo(numero);
+        if (Room.getTable(numero).getTableName() == null)
+            Room.getTable(numero).setTableName(tableName);
+        if (numero != null && Room.getTable(numero).getState()!=Table.WAITING_FOR_CLIENTS) {
+            Table t = Room.getTable(numero);
             t.addPax(pax);
-            t.setCompleto();
+            t.setComplete();
         }
         else
             System.out.println("Il nome del tavolo non � presente nella lista delle prenotazioni"
