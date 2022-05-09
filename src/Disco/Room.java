@@ -6,14 +6,13 @@ import java.util.Objects;
 public class Room {
 	
 	private static int MAX;
-	private static ArrayList<Table> tables;
+	private static final ArrayList<Table> tables = new ArrayList<>();
 	
 	
 	
 	public Room(int max) {
 		Room.MAX = max;
-		tables = new ArrayList<> (MAX);
-		for (int i = 1; i <= tables.size(); i++)
+		for (int i = 1; i <= max; i++)
 			tables.add(new Table(i));
 	}
 	
@@ -23,7 +22,7 @@ public class Room {
 	 *prende in ingresso il numero del Tavolo
 	 */
 	public static Table getTable (int numeroTavolo) throws NullPointerException {
-		if ( (numeroTavolo <= MAX) && (tables.get(numeroTavolo) != null) )
+		if ( (numeroTavolo < MAX) && (tables.get(numeroTavolo) != null) )
 			return tables.get(numeroTavolo);
 		else {
 			System.out.println("TAVOLO " + numeroTavolo +" NON ESISTE");

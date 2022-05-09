@@ -3,6 +3,9 @@ package Galley;
 import Disco.Room;
 import Disco.Table;
 
+import java.util.Map;
+import java.util.Scanner;
+
 public class ChiefGalley {
 	 
 	
@@ -19,42 +22,58 @@ public class ChiefGalley {
 	}
 	
 	/*
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * UNA CLASSE MENU PER GESTIRE I PAX. E SOPRATUTTO SOMMA E SOTTRAZIONE DEI PAX DOVREBBE STARE QUI E NON NELLA CLASSE ORDINE 
 	 * addElement (String , int) 
 	 * aggiunge un elemento all'ordine utilizzando l'omonima funzione presente in ordine, 
 	 * prima per� controlla che sia presente tale elemento (o tale quantit�) nel frigo
 	 */
 	public void addElement (Order ord, String element, int number) {
 		if(Fridge.check(element, number)) {
-			int pax = 0;
-			//TODO serve qualcosa che calcoli il numero di pax per ogni elemento dell'ordine
-			ord.addElement(element, number, pax);
+			ord.addElement(element, number);
 		}
 		else {
 			System.out.println("ERRORE, "+ element +" NON PRESENTE/NON SUFFICIENTE IN FRIGO");
 		}
 			
 	}
-	
+
 	/*
-	 * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	 * UNA CLASSE MENU PER GESTIRE I PAX. E SOPRATUTTO SOMMA E SOTTRAZIONE DEI PAX DOVREBBE STARE QUI E NON NELLA CLASSE ORDINE 
 	 * removeElement(Ordine, String)
 	 * rimuove un elemento dall'ordine utilizzando l'omonima funzione presente nella classe ordine.
 	 */
 	public void removeElement (Order ord, String element) {
-		int pax = 0;
-		//TODO serve qualcosa che calcoli il numero di pax per ogni elemento dell'ordine
-		ord.removeElement(element, pax);
+		ord.removeElement(element);
 	}
-	
+
+	public void orderDone (Order ord) {
+		System.out.println("ORDINE TAVOLO: "+ord.getTableNumber());
+		for (Map.Entry<String, Integer> o : ord.getThingsToDrink().entrySet())
+			System.out.println("- "+ o.getKey()+ " qtà: "+ o.getValue());
+
+		calculateThePax(ord);
+		calculateTheBill(ord);
+		sendOrder(ord);
+	}
+
+	private void calculateThePax(Order ord) {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Conto: ");
+		int pax =  input.nextInt();
+		ord.setPax(pax);
+	}
+
+
+	private void calculateTheBill (Order ord) {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Conto: ");
+		int money =  input.nextInt();
+		ord.setMoney(money);
+	}
 	
 	/*
 	 * inviaOrdine (Ordine)
 	 * cambia lo stato del tavolo in ATTESA_RUNNER, inserisce l'ordine nel buffer e chiama il notify perch� l'oridne � pronto
 	 */
-	public void sendOrder(Order ord) {
+	private void sendOrder(Order ord) {
 		Room.getTable(ord.getTableNumber()).setStateOrdered();
 		BufferFIFO.push(ord);
 		ord.notify();

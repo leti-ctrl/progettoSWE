@@ -12,6 +12,7 @@ public class Order extends Observable {
 	
 	private Map<String, Integer> thingsToDrink = new Hashtable<> ();
 	private int pax = 0;
+	private int money = 0;
 	private int tableNumber;
 	
 	
@@ -25,18 +26,16 @@ public class Order extends Observable {
 	 * addElement (String, int, int)
 	 * aggiunge un elemento alla lista dell'ordine
 	 */
-	void addElement (String name, int tot, int p) {
+	void addElement (String name, int tot) {
 		thingsToDrink.put(name, tot);
-		pax = getPax() + p;
 	}
 	
 	/*
 	 * removeElement(String, int)
 	 * rimuove un elemento dall'ordinazione in modo definitivo
 	 */
-	void removeElement(String name, int p) {
+	void removeElement(String name) {
 		thingsToDrink.remove(name);
-		pax = getPax() - p;
 	}
 	
 	
@@ -44,11 +43,21 @@ public class Order extends Observable {
 	public int getTableNumber() {
 		return tableNumber;
 	}
-	
+
 	public int getPax() {
 		return pax;
 	}
-	
+	public void setPax(int pax) {
+		this.pax = pax;
+	}
+
+	public int getMoney() {
+		return money;
+	}
+	public void setMoney(int money) {
+		this.money = money;
+	}
+
 	public Map<String, Integer> getThingsToDrink() {
 		return thingsToDrink;
 	}
@@ -67,5 +76,5 @@ public class Order extends Observable {
 		Order O = new Order(a);
 		return O;
 	}
-	
+
 }

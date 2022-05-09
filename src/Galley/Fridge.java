@@ -33,6 +33,14 @@ public class Fridge implements Observer {
 		fridgeMap.replace(element, oldValue-tot);
 	}
 
+	public static void addElement (String element, int value) {
+		if (fridgeMap.containsKey(element))
+			fridgeMap.replace(element, fridgeMap.get(element) + value);
+		else
+			fridgeMap.put(element, value);
+
+	}
+
 	@Override
 	public void update(Order ord) {
 		

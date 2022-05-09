@@ -1,11 +1,13 @@
 package Disco;
 
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class TableAttendant {
 
-    private static Map <String, Integer> reservations;
+    private static final Map <String, Integer> reservations = new HashMap<>();
 
 
     public TableAttendant(Map<String, Integer> res) {
@@ -22,13 +24,16 @@ public class TableAttendant {
     public void setTable (String tableName, int pax, boolean complete) {
         Integer num = reservations.get(tableName);
 
-        if (num != null && Room.getTable(num).getState()!=Table.WAITING_FOR_CLIENTS){
-            Table t = Room.getTable(num);
-            t.addPax(pax);
-            t.setTableName(tableName);
+        if (num != null){
+            System.out.println ("tavolo: "+ num);
+            if (Room.getTable(num).getState() != Table.WAITING_FOR_CLIENTS){
+                Table t = Room.getTable(num);
+                t.addPax(pax);
+                t.setTableName(tableName);
 
-            if (complete /*&& t.getState()!=Tavolo.ATTESA_CLIENTI*/ )
-                t.setComplete();
+                if (complete /*&& t.getState()!=Tavolo.ATTESA_CLIENTI*/)
+                    t.setComplete();
+            }
         }
         else
             System.out.println("Il nome del tavolo non e' presente nella lista delle prenotazioni "
@@ -46,9 +51,9 @@ public class TableAttendant {
     public void setComplete(String tableName, int pax) {
         Integer numero = reservations.get(tableName);
 
-        if (Room.getTable(numero).getTableName() == null)
-            Room.getTable(numero).setTableName(tableName);
-        if (numero != null && Room.getTable(numero).getState()!=Table.WAITING_FOR_CLIENTS) {
+        /*if (Room.getTable(numero).getTableName() == null)
+            Room.getTable(numero).setTableName(tableName);*/
+        if (numero != null || Room.getTable(numero).getState()!=Table.WAITING_FOR_CLIENTS) {
             Table t = Room.getTable(numero);
             t.addPax(pax);
             t.setComplete();

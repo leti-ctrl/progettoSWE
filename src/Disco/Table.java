@@ -47,7 +47,12 @@ public class Table {
         }
 
         public String getState() throws NullPointerException {
-            return state;
+            try {
+                return state;
+            } catch (NullPointerException n) {
+                System.out.print("STATO NON DEFINITO");
+            }
+            return " ";
         }
 
         void setComplete() {
