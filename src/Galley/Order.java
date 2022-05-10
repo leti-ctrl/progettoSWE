@@ -66,8 +66,8 @@ public class Order extends Observable {
 	 * notify(Order o)
 	 * chiama il notify della classe Observer
 	 */
-	public synchronized void notify (Order o) {
-		super.notify(o);
+	public void notif(Order o) throws InterruptedException {
+		super.notif(o);
 	}
 
 	/*

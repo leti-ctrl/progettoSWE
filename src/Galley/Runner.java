@@ -18,7 +18,7 @@ public class Runner implements Observer {
 	 * stampa solo un messaggio a video per il cameriere dicendogli che è arrivato un ordine
 	 */
 	@Override
-	public synchronized void update(Order o) {
+	public void update(Order o) {
 		System.out.println(id+" - E' arrivato l'ordine del tavolo "+o.getTableNumber());
 	}
 
@@ -30,18 +30,10 @@ public class Runner implements Observer {
 	 * getOrder()
 	 * fa pop() da BufferFIFO
 	 */
-	public Order getOrder() {
+	public Order getOrder() throws InterruptedException {
 		return BufferFIFO.pop();
 	}
 
-	/*
-	 * getThingsToDrink(String element, int number)
-	 * utilizza il metodo removeElement(String, int) per decrementare gli elementi presenti nel frigo
-	 */
-	public void takeThingsToDrink (String element, int number) { //TODO
-		Fridge.removeElement(element, number);
-	}
-	
 	
 	/*
 	 * setDone(Order ord)

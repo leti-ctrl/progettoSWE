@@ -26,15 +26,7 @@ public class Fridge implements Observer {
 		Integer value = fridgeMap.get(name);
 		return (value != null && value >= tot);
 	}
-	
-	/*
-	 * removeElement(String element, int tot)
-	 * metodo utilizzato dal runner per togliere le cose dal frigo e servirle al tavolo
-	 */
-	static void removeElement (String element, int tot) {
-		Integer oldValue = fridgeMap.get(element);
-		fridgeMap.replace(element, oldValue-tot);
-	}
+
 
 	/*
 	 * addElement (String element, int tot)
@@ -53,7 +45,7 @@ public class Fridge implements Observer {
 	 * decrementa gli elementi dal frigo
 	 */
 	@Override
-	public synchronized void update(Order ord) { //TODO
+	public void update(Order ord) {
 		
 		Map<String,Integer> o = ord.getThingsToDrink();
 		Set<String> element = o.keySet();

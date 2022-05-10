@@ -44,16 +44,19 @@ public class ChiefGalley {
 		ord.removeElement(element);
 	}
 
-	public synchronized void orderDone (Order ord) {
+	public void orderDone (Order ord) {
 		System.out.println("ORDINE TAVOLO: "+ord.getTableNumber());
-		for (Map.Entry<String, Integer> o : ord.getThingsToDrink().entrySet()) {
+		for (Map.Entry<String, Integer> o : ord.getThingsToDrink().entrySet())
 			System.out.println("- "+ o.getKey()+ " qtà: "+ o.getValue());
-			Fridge.removeElement(o.getKey(), o.getValue()); //TODO
-		}
 
 		calculateThePax(ord);
 		calculateTheBill(ord);
-		sendOrder(ord);
+		try {
+			sendOrder(ord);
+		} catch (InterruptedException e) {
+			System.out.println(e.getMessage());
+		}
+
 	}
 
 	private void calculateThePax(Order ord) {
@@ -79,9 +82,9 @@ public class ChiefGalley {
 	 * inserisce l'ordine nel buffer
 	 * chiama il notify perché l'oridne è pronto
 	 */
-	private synchronized void sendOrder(Order ord) {
-		Room.getTable(ord.getTableNumber()).setStateOrdered();
+	private void sendOrder(Order ord) throws InterruptedException {
 		BufferFIFO.push(ord);
+		Room.getTable(ord.getTableNumber()).setStateOrdered();
 		ord.notify();
 	}
 	

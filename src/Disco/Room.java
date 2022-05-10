@@ -21,11 +21,11 @@ public class Room {
 	 *getTable(int tableName) ritorna il riferimento al tavolo
 	 *prende in ingresso il numero del Tavolo
 	 */
-	public static Table getTable (int tableName) throws NullPointerException {
+	public static Table getTable (int tableNumber) throws NullPointerException {
 		Table t = null;
 		try {
-			if ( (tableName < MAX) && (tables.get(tableName) != null) )
-				t = tables.get(tableName);
+			if ( (tableNumber < MAX) && (tables.get(tableNumber) != null) )
+				t = tables.get(tableNumber);
 		} catch (NullPointerException e) {
 			System.out.println (e.getMessage());
 		}
