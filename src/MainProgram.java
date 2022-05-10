@@ -4,6 +4,7 @@ import Disco.TableAttendant;
 
 import Galley.ChiefGalley;
 import Galley.Fridge;
+import Galley.Order;
 import Galley.Runner;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class MainProgram {
         TableAttendant tableAttendant = new TableAttendant(res);
         System.out.println("Acoompagnatore creato");
 
-        int run = 5;
+        int run = 2;
         ArrayList<Runner> runner = new ArrayList<Runner>(run);
         for (int i = 0; i < run; i++)
             runner.add(new Runner(i));
@@ -57,7 +58,13 @@ public class MainProgram {
         tableAttendant.setComplete("Giuseppe Bianchi", 23);
         tableAttendant.setComplete("Chiara Neri", 30);
 
+        ChiefGalley chiefGalley = new ChiefGalley();
+        Order ordTav5 = chiefGalley.takeOrder(Room.getTable(5));
 
+        chiefGalley.addElement(ordTav5, "Bombay", 2);
+        chiefGalley.addElement(ordTav5, "Mare", 2);
+        chiefGalley.removeElement(ordTav5, "Bombay");
+        chiefGalley.orderDone(ordTav5);
 
     }
 }

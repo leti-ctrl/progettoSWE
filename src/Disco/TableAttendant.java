@@ -8,6 +8,7 @@ import java.util.Objects;
 public class TableAttendant {
 
     private static final Map <String, Integer> reservations = new HashMap<>();
+    private int countPax = 0;
 
 
     public TableAttendant(Map<String, Integer> res) {
@@ -16,7 +17,7 @@ public class TableAttendant {
 
 
     /*
-     * setTavolo(String, int, boolean)
+     * setTavolo(String tableName, int pax, boolean complete)
      * inizializza il tavolo con il nome e i primi pax
      * prende in ingresso anche un booleano che mi dice se i tavolo � al completo oppure no.
      * nel caso sia al completo cambia lo stato del tavolo in ATTESA_CLIENTI
@@ -26,9 +27,10 @@ public class TableAttendant {
 
         if (num != null){
             System.out.println ("tavolo: "+ num);
-            if (Room.getTable(num).getState() != Table.WAITING_FOR_CLIENTS){
+            if (!Objects.equals(Room.getTable(num).getState(), Table.WAITING_FOR_CLIENTS)){
                 Table t = Room.getTable(num);
                 t.addPax(pax);
+                countPax += pax;
                 t.setTableName(tableName);
 
                 if (complete /*&& t.getState()!=Tavolo.ATTESA_CLIENTI*/)
@@ -37,30 +39,36 @@ public class TableAttendant {
         }
         else
             System.out.println("Il nome del tavolo non e' presente nella lista delle prenotazioni "
-                    + "oppure e' gia' al completo");
+                    + "oppure è già al completo");
     }
 
 
     /*
-     * setCompleto (String, int)
-     * cambia lo stato del tavolo in ATTESA_CLIENTI e aggiunge gli ultimi pax
-     * pu� anche essere chiamto per inizializzare un tavolo da principio. Praticamente � simile al metodo
-     * setTavolo con l'attributo boolen completo = true.
+     * setComplete (String tableName, int pax)
+     * cambia lo stato del tavolo in WAITING_FOR_CLIENTS e aggiunge gli ultimi pax
+     * può anche essere chiamto per inizializzare un tavolo da principio.
+     * Praticamente è simile al metodo setTable con l'attributo boolen complete = true.
      */
-
     public void setComplete(String tableName, int pax) {
-        Integer numero = reservations.get(tableName);
+        Integer number = null;
 
-        /*if (Room.getTable(numero).getTableName() == null)
-            Room.getTable(numero).setTableName(tableName);*/
-        if (numero != null || Room.getTable(numero).getState()!=Table.WAITING_FOR_CLIENTS) {
-            Table t = Room.getTable(numero);
-            t.addPax(pax);
-            t.setComplete();
+        if (reservations.containsKey(tableName))
+            number = reservations.get(tableName);
+        //TODO:
+        // else
+        //      se ci sono tavoli liberi assegna questo nome al tavolo libero
+
+        if (number != null) {
+            if (!Objects.equals(Room.getTable(number).getState(), Table.WAITING_FOR_CLIENTS)) {
+                Table t = Room.getTable(number);
+                t.addPax(pax);
+                countPax += pax;
+                t.setComplete();
+            }
         }
         else
-            System.out.println("Il nome del tavolo non � presente nella lista delle prenotazioni"
-                    + "oppure � gi� al completo");
+            System.out.println("Il nome del tavolo non è presente nella lista delle prenotazioni"
+                    + "oppure è già al completo");
     }
 }
 

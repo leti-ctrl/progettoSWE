@@ -10,20 +10,18 @@ import DesignPattern.Observable;
 
 public class Order extends Observable {
 	
-	private Map<String, Integer> thingsToDrink = new Hashtable<> ();
+	private final Map<String, Integer> thingsToDrink = new Hashtable<> ();
 	private int pax = 0;
 	private int money = 0;
-	private int tableNumber;
+	private final int tableNumber;
 	
 	
 	private Order(int numeroTavolo) {
 		this.tableNumber = numeroTavolo;
 	}
 	
-	
-	
 	/*
-	 * addElement (String, int, int)
+	 * addElement (String name, int tot)
 	 * aggiunge un elemento alla lista dell'ordine
 	 */
 	void addElement (String name, int tot) {
@@ -31,7 +29,7 @@ public class Order extends Observable {
 	}
 	
 	/*
-	 * removeElement(String, int)
+	 * removeElement(String name)
 	 * rimuove un elemento dall'ordinazione in modo definitivo
 	 */
 	void removeElement(String name) {
@@ -65,16 +63,19 @@ public class Order extends Observable {
 	
 	
 	/*
-	 * notify(Ordine)
+	 * notify(Order o)
 	 * chiama il notify della classe Observer
 	 */
-	public void notify (Order o) {
+	public synchronized void notify (Order o) {
 		super.notify(o);
 	}
 
+	/*
+	 * valueOf(int a)
+	 * è l'unico che può creare un oggetto di tipo Order
+	 */
 	public static Order valueOf(int a) {
-		Order O = new Order(a);
-		return O;
+		return (new Order(a));
 	}
 
 }

@@ -10,8 +10,8 @@ public class ChiefGalley {
 	 
 	
 	/*
-	 * creaOrdine(Tavolo)
-	 * crea l'oggetto ordine e lo setta al tavolo corrispondente; 
+	 * takeOrder(Table t)
+	 * chiama la funzione generateOrder per creare l'ordine e lo setta al tavolo corrispondente;
 	 * ritorna l'oggetto creato per fare le operazioni di aggiunta/rimozione di elementi
 	 */
 	public Order takeOrder(Table t) {
@@ -22,9 +22,9 @@ public class ChiefGalley {
 	}
 	
 	/*
-	 * addElement (String , int) 
+	 * addElement (Order ord, String element, int number)
 	 * aggiunge un elemento all'ordine utilizzando l'omonima funzione presente in ordine, 
-	 * prima per� controlla che sia presente tale elemento (o tale quantit�) nel frigo
+	 * prima controlla che sia presente tale elemento (o tale quantità) nel frigo
 	 */
 	public void addElement (Order ord, String element, int number) {
 		if(Fridge.check(element, number)) {
@@ -37,17 +37,19 @@ public class ChiefGalley {
 	}
 
 	/*
-	 * removeElement(Ordine, String)
+	 * removeElement(Order ord, String element)
 	 * rimuove un elemento dall'ordine utilizzando l'omonima funzione presente nella classe ordine.
 	 */
 	public void removeElement (Order ord, String element) {
 		ord.removeElement(element);
 	}
 
-	public void orderDone (Order ord) {
+	public synchronized void orderDone (Order ord) {
 		System.out.println("ORDINE TAVOLO: "+ord.getTableNumber());
-		for (Map.Entry<String, Integer> o : ord.getThingsToDrink().entrySet())
+		for (Map.Entry<String, Integer> o : ord.getThingsToDrink().entrySet()) {
 			System.out.println("- "+ o.getKey()+ " qtà: "+ o.getValue());
+			Fridge.removeElement(o.getKey(), o.getValue()); //TODO
+		}
 
 		calculateThePax(ord);
 		calculateTheBill(ord);
@@ -56,9 +58,10 @@ public class ChiefGalley {
 
 	private void calculateThePax(Order ord) {
 		Scanner input = new Scanner(System.in);
-		System.out.println("Conto: ");
+		System.out.println("PAX: ");
 		int pax =  input.nextInt();
 		ord.setPax(pax);
+		Room.getTable(ord.getTableNumber()).setUsedPax(pax);
 	}
 
 
@@ -67,22 +70,27 @@ public class ChiefGalley {
 		System.out.println("Conto: ");
 		int money =  input.nextInt();
 		ord.setMoney(money);
+
 	}
 	
 	/*
-	 * inviaOrdine (Ordine)
-	 * cambia lo stato del tavolo in ATTESA_RUNNER, inserisce l'ordine nel buffer e chiama il notify perch� l'oridne � pronto
+	 * sendOrder(Order o)
+	 * cambia lo stato del tavolo in ATTESA_RUNNER
+	 * inserisce l'ordine nel buffer
+	 * chiama il notify perché l'oridne è pronto
 	 */
-	private void sendOrder(Order ord) {
+	private synchronized void sendOrder(Order ord) {
 		Room.getTable(ord.getTableNumber()).setStateOrdered();
 		BufferFIFO.push(ord);
 		ord.notify();
 	}
 	
-	
+	/*
+	 * generateOrder (int a)
+	 * ha il solo scopo di creare l'ordine chiamando la funzione valueOf nella classe Order
+	 */
 	private Order generateOrder (int a) {
-		Order O = Order.valueOf(a);
-		return O;
+		return (Order.valueOf(a));
 	}
 	
 

@@ -12,7 +12,8 @@ public class Table {
 
         private final int tableNumber;
         private String tableName = "";
-        private int pax = 0;
+        private static int pax = 0;
+        private int usedPax = 0;
         private Order anOrder = null;
         private String state = WAITING_FOR_CLIENTS;
 
@@ -21,17 +22,20 @@ public class Table {
             this.tableNumber = tableNumber;
         }
 
-        void setTableName(String tableName) throws NullPointerException {
+        void setTableName(String tableName) {
             this.tableName = tableName;
         }
 
-        void addPax (int n) throws NullPointerException {
-            setPax(getPax() + n);
-        }
+    public int getUsedPax() {
+        return usedPax;
+    }
 
-        private void setPax(int i) {
-            pax = i;
+    public void setUsedPax(int usedPax) {
+        this.usedPax += usedPax;
+    }
 
+    void addPax (int p) {
+            pax += p;
         }
 
         public int getPax() {
@@ -42,17 +46,12 @@ public class Table {
             return tableNumber;
         }
 
-        public String getTableName() throws NullPointerException {
+        public String getTableName() {
             return tableName;
         }
 
-        public String getState() throws NullPointerException {
-            try {
-                return state;
-            } catch (NullPointerException n) {
-                System.out.print("STATO NON DEFINITO");
-            }
-            return " ";
+        public String getState() {
+            return state;
         }
 
         void setComplete() {
@@ -70,4 +69,7 @@ public class Table {
             this.anOrder = ord;
         }
 
+    public Order getAnOrder() {
+        return anOrder;
+    }
 }

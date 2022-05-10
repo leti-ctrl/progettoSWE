@@ -5,19 +5,20 @@ import java.util.ArrayList;
 import Galley.Order;
 
 public abstract class Observable {
-	private ArrayList<Observer> observer = new ArrayList <> ();
+	private static ArrayList<Observer> observer = new ArrayList <> ();
 
-	protected void notify (Order ord) {
+	protected synchronized void notify (Order ord) {
+		System.out.println("Sto facendo il notify.");
 		for (Observer i : observer) {
 			i.update(ord);
 		}
 	};
 	
-	public void attach (Observer obs) {
+	public synchronized static void attach (Observer obs) {
 		observer.add(obs);
 	};
 	
-	public void detach (Observer obs) {
+	public synchronized static void detach (Observer obs) {
 		observer.remove(obs);
 	};
 	

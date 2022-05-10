@@ -4,28 +4,31 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
+import DesignPattern.Observable;
 import DesignPattern.Observer;
 
 
 
 public class Fridge implements Observer {
 	
-	private static Map<String, Integer> fridgeMap = new Hashtable <> ();
+	private static final Map<String, Integer> fridgeMap = new Hashtable <> ();
+
+	public Fridge () {
+		Observable.attach(this);
+	}
 	
 	
 	/*
-	 * check (String, int)
+	 * check (String name, int tot)
 	 * controlla se un elemento c'� nel frigo prima di aggiungere nell'ordine
 	 */
 	static boolean check (String name, int tot) {
 		Integer value = fridgeMap.get(name);
-		if (value != null && value >= tot)
-			return true;
-		return false;
+		return (value != null && value >= tot);
 	}
 	
 	/*
-	 * removeElement(String, int)
+	 * removeElement(String element, int tot)
 	 * metodo utilizzato dal runner per togliere le cose dal frigo e servirle al tavolo
 	 */
 	static void removeElement (String element, int tot) {
@@ -33,6 +36,10 @@ public class Fridge implements Observer {
 		fridgeMap.replace(element, oldValue-tot);
 	}
 
+	/*
+	 * addElement (String element, int tot)
+	 * aggiunge un elemento nel frigo incrementandone il valore se è già presente oppure inserendolo
+	 */
 	public static void addElement (String element, int value) {
 		if (fridgeMap.containsKey(element))
 			fridgeMap.replace(element, fridgeMap.get(element) + value);
@@ -41,8 +48,12 @@ public class Fridge implements Observer {
 
 	}
 
+	/*
+	 * update (Order ord)
+	 * decrementa gli elementi dal frigo
+	 */
 	@Override
-	public void update(Order ord) {
+	public synchronized void update(Order ord) { //TODO
 		
 		Map<String,Integer> o = ord.getThingsToDrink();
 		Set<String> element = o.keySet();
@@ -51,8 +62,6 @@ public class Fridge implements Observer {
 			int newValue = fridgeMap.get(i) - o.get(i);
 			fridgeMap.replace(i, newValue);
 		}
-		
-		
 	}
 
 	

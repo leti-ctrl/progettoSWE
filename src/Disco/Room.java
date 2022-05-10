@@ -18,22 +18,24 @@ public class Room {
 	
 	
 	/*
-	 *getTavolo(int i) ritorna il riferimento al tavolo
+	 *getTable(int tableName) ritorna il riferimento al tavolo
 	 *prende in ingresso il numero del Tavolo
 	 */
-	public static Table getTable (int numeroTavolo) throws NullPointerException {
-		if ( (numeroTavolo < MAX) && (tables.get(numeroTavolo) != null) )
-			return tables.get(numeroTavolo);
-		else {
-			System.out.println("TAVOLO " + numeroTavolo +" NON ESISTE");
-			return null;
-		}		
+	public static Table getTable (int tableName) throws NullPointerException {
+		Table t = null;
+		try {
+			if ( (tableName < MAX) && (tables.get(tableName) != null) )
+				t = tables.get(tableName);
+		} catch (NullPointerException e) {
+			System.out.println (e.getMessage());
+		}
+		return t;
 	}
 	
 	
 	/*
-	 * getTavoloAttesaCambusa () 
-	 * ritorna una lista di tavoli che hanno state = ATTESA_CAPOCAMBUSA
+	 * getWaitChiefTableList ()
+	 * ritorna una lista di tavoli che hanno state = WAITING_FOR_CHIEFGALLEY
 	 */
 	public static ArrayList<Table> getWaitChiefTableList() {
 		ArrayList<Table> ret = new ArrayList <> ();
